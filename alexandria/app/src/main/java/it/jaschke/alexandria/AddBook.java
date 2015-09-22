@@ -77,8 +77,10 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
                     eanString = "978" + eanString;
                 }
                 if (eanString.length() < 13) {
-                    clearFields();
+                    //clearFields();
                     return;
+                }else{
+                    clearFields();
                 }
                 if(bookIsNew(eanString)) {
                     //Once we have an ISBN, start a book intent
@@ -113,6 +115,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
             @Override
             public void onClick(View view) {
                 ean.setText("");
+                clearFields();
             }
         });
 
@@ -189,8 +192,14 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         ((TextView) rootView.findViewById(R.id.bookSubTitle)).setText(bookSubTitle);
 
         String authors = data.getString(data.getColumnIndex(AlexandriaContract.AuthorEntry.AUTHOR));
-        String[] authorsArr = authors.split(",");
-        ((TextView) rootView.findViewById(R.id.authors)).setLines(authorsArr.length);
+        String[] authorsArr = new String[0];
+        try {
+            authorsArr = authors.split(",");
+            ((TextView) rootView.findViewById(R.id.authors)).setLines(authorsArr.length);
+        }catch (Exception e){
+
+        }
+
         ((TextView) rootView.findViewById(R.id.authors)).setText(authors.replace(",","\n"));
         String imgUrl = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.IMAGE_URL));
         if(Patterns.WEB_URL.matcher(imgUrl).matches()){
