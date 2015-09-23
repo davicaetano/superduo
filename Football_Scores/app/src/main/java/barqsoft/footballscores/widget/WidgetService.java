@@ -12,6 +12,7 @@ import java.util.Date;
 
 import barqsoft.footballscores.MainActivity;
 import barqsoft.footballscores.R;
+import barqsoft.footballscores.Utilies;
 import barqsoft.footballscores.data.DatabaseContract;
 
 /**
@@ -75,13 +76,19 @@ public class WidgetService extends RemoteViewsService {
                 String score1 = data.getString(data.getColumnIndex(DatabaseContract.scores_table.HOME_GOALS_COL))+"";
                 String score2 = data.getString(data.getColumnIndex(DatabaseContract.scores_table.AWAY_GOALS_COL))+"";
                 if (score1.equals("-1") || score2.equals("-1")){
-                    score = " X ";
+                    score = " - ";
                 }else{
-                    score = score1 + " X " + score2;
+                    score = score1 + " - " + score2;
                 }
                 views.setTextViewText(R.id.home_name,data.getString(data.getColumnIndex(DatabaseContract.scores_table.HOME_COL)));
+                views.setContentDescription(R.id.home_name, data.getString(data.getColumnIndex(DatabaseContract.scores_table.HOME_COL)));
+
                 views.setTextViewText(R.id.score_textview, score);
+                views.setContentDescription(R.id.score_textview, Utilies.getContentScores(Integer.parseInt(score1),Integer.parseInt(score2)));
+
                 views.setTextViewText(R.id.away_name, data.getString(data.getColumnIndex(DatabaseContract.scores_table.AWAY_COL)));
+                views.setContentDescription(R.id.away_name, data.getString(data.getColumnIndex(DatabaseContract.scores_table.AWAY_COL)));
+
                 views.setTextColor(R.id.home_name, getResources().getColor(R.color.blue07));
                 views.setTextColor(R.id.score_textview, getResources().getColor(R.color.blue07));
                 views.setTextColor(R.id.away_name, getResources().getColor(R.color.blue07));
